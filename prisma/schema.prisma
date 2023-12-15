@@ -21,10 +21,22 @@ model Barber {
 }
 
 model Queue {
-  id       String   @id @default(cuid())
-  date     DateTime @default(now()) @db.Date()
-  barber   Barber   @relation(fields: [barberId], references: [id])
-  barberId String
+  id           String         @id @default(cuid())
+  date         DateTime       @default(now()) @db.Date()
+  barber       Barber         @relation(fields: [barberId], references: [id])
+  barberId     String
+  ClientsQueue ClientsQueue[]
 
   @@map("Queue")
+}
+
+model ClientsQueue {
+  id         Int     @id @default(autoincrement())
+  queue      Queue   @relation(fields: [queueId], references: [id])
+  queueId    String
+  name       String
+  services   String
+  isAwaiting Boolean @default(true)
+
+  @@map("clientsqueue")
 }
