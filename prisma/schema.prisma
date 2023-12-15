@@ -9,3 +9,22 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Barber {
+  id     String  @id @default(cuid())
+  name   String
+  email  String  @unique
+  phone  String? @unique
+  Queues Queue[]
+
+  @@map("Barber")
+}
+
+model Queue {
+  id       String   @id @default(cuid())
+  date     DateTime @default(now()) @db.Date()
+  barber   Barber   @relation(fields: [barberId], references: [id])
+  barberId String
+
+  @@map("Queue")
+}
