@@ -15,4 +15,7 @@ export class BarbersService {
   async findAllBarbers() {
     return await this.prisma.barber.findMany();
   }
+  async findBarberById(id: string) {
+    return await this.prisma.barber.findUnique({ where: { id } });
+  }
 }

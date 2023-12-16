@@ -7,6 +7,7 @@ import {
   Delete,
   Put,
   Res,
+  Param,
 } from "@nestjs/common";
 import { BarbersService } from "./barbers.service";
 import CreateBarberDto from "./dtos/create-barber";
@@ -58,10 +59,10 @@ export class BarbersController {
       return res.status(500).json({ message: "Erro interno do servidor" });
     }
   }
-  @Get(":email")
-  async getBarberByEmail(@Res() res: Response, email: string) {
+  @Get(":id")
+  async findBarberById(@Param("id") id: string, @Res() res: Response) {
     try {
-      const barber = await this.barbersService.findBarberByEmail(email);
+      const barber = await this.barbersService.findBarberById(id);
       if (!barber) {
         return res
           .status(HttpStatus.NOT_FOUND)
