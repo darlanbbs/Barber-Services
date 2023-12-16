@@ -1,9 +1,11 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   HttpStatus,
   Post,
+  Get,
+  Delete,
+  Put,
   Res,
 } from "@nestjs/common";
 import { BarbersService } from "./barbers.service";
@@ -15,14 +17,37 @@ export class BarbersController {
   constructor(private readonly barbersService: BarbersService) {}
   @Post()
   async create(@Body() data: CreateBarberDto, @Res() res: Response) {
-    const barberExists = await this.barbersService.findBarberByEmail(
-      data.email
-    );
+    try {
+      const barberExists = await this.barbersService.findBarberByEmail(
+        data.email
+      );
 
-    if (barberExists) {
-      res.status(HttpStatus.CONFLICT).json({ message: "Barbeiro ja existe" });
+      if (barberExists) {
+        return res
+          .status(HttpStatus.CONFLICT)
+          .json({ message: "Barbeiro já existe" });
+      }
+
+      const barber = await this.barbersService.createBarber(data);
+
+      if (!barber) {
+        return res
+          .status(HttpStatus.EXPECTATION_FAILED)
+          .json({ message: "Erro ao criar o barbeiro" });
+      }
+
+      return res.status(201).json(barber);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Erro interno do servidor" });
     }
-    const barber = await this.barbersService.createBarber(data);
-    return res.status(201).json(barber);
+  }
+
+  @Get()
+  async getAllBarbers(@Res() res: Response) {
+    const barbers = await this.barbersService.findAllBarbers();
+    if (barbers != null || barbers != undefined) {
+      res.status(HttpStatus.OK).json(barbers);
+    }
   }
 }

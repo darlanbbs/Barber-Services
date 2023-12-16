@@ -5,10 +5,14 @@ import CreateBarberDto from "./dtos/create-barber";
 @Injectable()
 export class BarbersService {
   constructor(private readonly prisma: PrismaService) {}
-  async findBarberByEmail(email: string): Promise<any> {
-     await this.prisma.barber.findFirst({ where: { email } });
+  async findBarberByEmail(email: string): Promise<CreateBarberDto> {
+    return await this.prisma.barber.findFirst({ where: { email } });
   }
-  async createBarber(data: CreateBarberDto) {
-    await this.prisma.barber.create({ data });
+  async createBarber(data: CreateBarberDto): Promise<CreateBarberDto> {
+    const createdBarber = await this.prisma.barber.create({ data });
+    return createdBarber;
+  }
+  async findAllBarbers() {
+    return await this.prisma.barber.findMany();
   }
 }
