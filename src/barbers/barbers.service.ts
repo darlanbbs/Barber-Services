@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
 import CreateBarberDto from "./dtos/create-barber";
+import { UpdateBarberDto } from "./dtos/update-barber";
 
 @Injectable()
 export class BarbersService {
@@ -17,5 +18,15 @@ export class BarbersService {
   }
   async findBarberById(id: string) {
     return await this.prisma.barber.findUnique({ where: { id } });
+  }
+  async updateBarber(
+    id: string,
+    data: UpdateBarberDto
+  ): Promise<UpdateBarberDto> {
+    const updateBarber = await this.prisma.barber.update({
+      where: { id },
+      data,
+    });
+    return updateBarber;
   }
 }
