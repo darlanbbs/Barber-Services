@@ -58,4 +58,19 @@ export class BarbersController {
       return res.status(500).json({ message: "Erro interno do servidor" });
     }
   }
+  @Get(":email")
+  async getBarberByEmail(@Res() res: Response, email: string) {
+    try {
+      const barber = await this.barbersService.findBarberByEmail(email);
+      if (!barber) {
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: "Nenhum barbeiro encontrado" });
+      }
+      return res.status(200).json(barber);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  }
 }
