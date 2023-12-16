@@ -45,9 +45,17 @@ export class BarbersController {
 
   @Get()
   async getAllBarbers(@Res() res: Response) {
-    const barbers = await this.barbersService.findAllBarbers();
-    if (barbers != null || barbers != undefined) {
-      res.status(HttpStatus.OK).json(barbers);
+    try {
+      const barbers = await this.barbersService.findAllBarbers();
+      if (!barbers) {
+        return res
+          .status(HttpStatus.NOT_FOUND)
+          .json({ message: "Nenhum barbeiro encontrado" });
+      }
+      return res.status(200).json(barbers);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Erro interno do servidor" });
     }
   }
 }
