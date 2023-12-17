@@ -22,6 +22,9 @@ export class ClientsqueueService {
   async verifyQueueExists(id: string) {
     return await this.prisma.queue.findUnique({ where: { id } });
   }
+  async verifyClientExist(id: number) {
+    return await this.prisma.clientsQueue.findUnique({ where: { id } });
+  }
   async attendClient(data: attendClientDto) {
     return await this.prisma.clientsQueue.update({
       where: { id: data.id },
