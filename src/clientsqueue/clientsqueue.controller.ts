@@ -33,4 +33,13 @@ export class ClientsqueueController {
       return res.status(500).json({ message: "Erro interno do servidor" });
     }
   }
+  @Get()
+  async getAllClientsQueue(@Res() res: Response) {
+    try {
+      const queues = await this.clientsqueueService.getAllClientsQueue();
+      return res.status(200).json(queues);
+    } catch (error) {
+      return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  }
 }
