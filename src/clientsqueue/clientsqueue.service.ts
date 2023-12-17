@@ -31,4 +31,9 @@ export class ClientsqueueService {
       data: { isAwaiting: data.isAwaiting },
     });
   }
+  async deleteClient(id: number) {
+    return await this.prisma.clientsQueue.delete({
+      where: { id },
+    });
+  }
 }

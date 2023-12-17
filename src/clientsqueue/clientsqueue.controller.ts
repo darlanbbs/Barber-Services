@@ -53,7 +53,12 @@ export class ClientsqueueController {
         return res.status(404).json({ message: "Cliente inexistente" });
       }
       const queue = await this.clientsqueueService.attendClient(data);
-      return res.status(200).json(queue);
+      if (data.isAwaiting === false) {
+        const clientAttended = await this.clientsqueueService.deleteClient(
+          data.id
+        );
+        return res.status(204).json(clientAttended);
+      }
     } catch (error) {
       return res.status(500).json({ message: "Erro interno do servidor" });
     }
