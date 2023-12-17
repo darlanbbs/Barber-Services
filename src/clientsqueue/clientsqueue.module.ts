@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { ClientsqueueService } from './clientsqueue.service';
-import { ClientsqueueController } from './clientsqueue.controller';
+import { Module } from "@nestjs/common";
+import { ClientsqueueService } from "./clientsqueue.service";
+import { ClientsqueueController } from "./clientsqueue.controller";
 
 @Module({
   controllers: [ClientsqueueController],
