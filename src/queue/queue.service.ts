@@ -18,4 +18,41 @@ export class QueueService {
       },
     });
   }
+  async getAllQueuesToday() {
+    return await this.prisma.queue.findMany({
+      where: {
+        date: {
+          equals: new Date(),
+        },
+      },
+      include: {
+        barber: true,
+        ClientsQueue: true,
+      },
+    });
+  }
+  async getAllQueuesById(barberId: string) {
+    return await this.prisma.queue.findMany({
+      where: {
+        barberId,
+      },
+      include: {
+        barber: true,
+        ClientsQueue: true,
+      },
+    });
+  }
+  async getAllQueues() {
+    return await this.prisma.queue.findMany({
+      where: {
+        date: {
+          equals: new Date(),
+        },
+      },
+      include: {
+        barber: true,
+        ClientsQueue: true,
+      },
+    });
+  }
 }
